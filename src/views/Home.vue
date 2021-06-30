@@ -1,13 +1,17 @@
 <template>
   <v-container fluid>
     <span v-for="(namespace, index) in namespaceList" v-bind:key="index">
-      <h2>{{ namespace.name }} namespace</h2>
+      <h2>Namespace {{ namespace.name }}</h2>
       <v-divider></v-divider>
       <span
         v-for="(ingress, index) in namespace.ingressList"
         v-bind:key="index"
       >
-        <a>https://{{ ingress.host }}</a>
+        <v-row style="padding-left: 1em">
+          <v-col cols="12">
+            <a>https://{{ ingress.host }}</a>
+          </v-col>
+        </v-row>
       </span>
     </span>
   </v-container>
@@ -25,7 +29,9 @@ export default Vue.extend({
   }),
   async mounted() {
     try {
-      const { data } = await axios.get(`${process.env.VUE_APP_BACKEND_HOSTNAME}/api/namespaces`);
+      const { data } = await axios.get(
+        `${process.env.VUE_APP_BACKEND_HOSTNAME}/api/namespaces`
+      );
       data.forEach(async (element) => {
         if (element.name != "") {
           const { data } = await axios.get(

@@ -12,7 +12,9 @@ RUN npm run build
 FROM nginx:1.21.0-alpine
 COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 COPY --from=builder /usr/src/app/nginx.conf /etc/nginx/nginx.conf
-RUN  chgrp -R 0 /usr/share/nginx/html /etc/nginx/ \
-    && chmod -R g=u /usr/share/nginx/html /etc/nginx/
+RUN mkdir -p /var/cache/nginx/ \
+    && touch /var/run/nginx.pid \
+    && chgrp -R 0 /usr/share/nginx/html /etc/nginx/ /var/cache/nginx/ /var/run/nginx.pid \
+    && chmod -R g=u /usr/share/nginx/html /etc/nginx/ /var/cache/nginx/ /var/run/nginx.pid
 EXPOSE 8080
 USER 1001
