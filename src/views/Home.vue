@@ -9,7 +9,9 @@
       >
         <v-row style="padding-left: 1em">
           <v-col cols="12">
-            <a>https://{{ ingress.host }}</a>
+            <a target="_blank" :href="`https://${ingress.host}`"
+              >https://{{ ingress.host }}</a
+            >
           </v-col>
         </v-row>
       </span>
