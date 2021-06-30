@@ -25,13 +25,12 @@ export default Vue.extend({
   }),
   async mounted() {
     try {
-      const { data } = await axios.get("http://127.0.0.1:3000/api/namespaces");
+      const { data } = await axios.get(`${process.env.VUE_APP_BACKEND_HOSTNAME}/api/namespaces`);
       data.forEach(async (element) => {
         if (element.name != "") {
           const { data } = await axios.get(
-            "http://127.0.0.1:3000/api/ingresses?namespace=" + element.name
+            `${process.env.VUE_APP_BACKEND_HOSTNAME}/api/ingresses?namespace=${element.name}`
           );
-
           this.namespaceList.push({ name: element.name, ingressList: data });
         }
       });
