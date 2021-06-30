@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "cluster-processor-service.fullname" . }}
+  name: {{ include "dashboard-service.fullname" . }}
   labels:
-    {{- include "cluster-processor-service.labels" . | nindent 4 }}
+    {{- include "dashboard-service.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "cluster-processor-service.selectorLabels" . | nindent 6 }}
+      {{- include "dashboard-service.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "cluster-processor-service.selectorLabels" . | nindent 8 }}
+        {{- include "dashboard-service.selectorLabels" . | nindent 8 }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "cluster-processor-service.fullname" . }}
+      serviceAccountName: {{ include "dashboard-service.fullname" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -31,11 +31,6 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
-          env:
-            - name: cluster-procesor-service-variable
-              value: cluster-procesor-service-variable-value
-            - name: env-name
-              value: env-value
           livenessProbe:
             httpGet:
               path: /
